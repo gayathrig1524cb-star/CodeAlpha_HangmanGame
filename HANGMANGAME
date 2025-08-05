@@ -1,0 +1,112 @@
+import random
+
+# List of words to choose from
+word_list = ['python', 'hangman', 'challenge', 'programming', 'developer']
+
+# Hangman stages for visual representation
+stages = [
+    '''
+      +---+
+      |   |
+      O   |
+     /|\\  |
+     / \\  |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      |   |
+      O   |
+     /|\\  |
+     /    |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      |   |
+      O   |
+     /|\\  |
+          |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      |   |
+      O   |
+     /|   |
+          |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      |   |
+      O   |
+      |   |
+          |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      |   |
+      O   |
+          |
+          |
+          |
+    =========
+    ''',
+    '''
+      +---+
+      |   |
+          |
+          |
+          |
+          |
+    =========
+    '''
+]
+
+# Randomly choose a word from the list
+chosen_word = random.choice(word_list)
+word_length = len(chosen_word)
+display = ['_'] * word_length
+lives = len(stages) - 1
+guessed_letters = []
+
+print("Welcome to Hangman!")
+
+# Main game loop
+while lives > 0 and '_' in display:
+    guess = input("Guess a letter: ").lower()
+
+    if not guess.isalpha() or len(guess) != 1:
+        print("Please enter a single alphabetical character.")
+        continue
+
+    if guess in guessed_letters:
+        print(f"You've already guessed '{guess}'. Try another letter.")
+        continue
+
+    guessed_letters.append(guess)
+
+    if guess in chosen_word:
+        for index, letter in enumerate(chosen_word):
+            if letter == guess:
+                display[index] = guess
+        print(f"Good job! '{guess}' is in the word.")
+    else:
+        lives -= 1
+        print(f"Sorry, '{guess}' is not in the word. You lose a life.")
+
+    print(' '.join(display))
+    print(stages[len(stages) - lives - 1])
+
+# Game outcome
+if '_' not in display:
+    print("Congratulations! You've guessed the word correctly!")
+else:
+    print(f"You've run out of lives. The word was '{chosen_word}'. Better luck next time!")
